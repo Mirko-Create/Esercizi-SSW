@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Ricerca Libri</title>
+    <style>
+    body {
+      background-color: #f6d8ac;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+    }
+    
+    input[type="text"] {
+      width: 300px;
+      padding: 10px;
+      font-size: 16px;
+      margin-bottom: 10px;
+      border: 2px solid #a16632;
+      border-radius: 10px;
+      outline: none;
+      color: #3e3e3e;
+      background-color: #f9f4ea;
+    }
+    
+    input[type="text"]:focus {
+      border-color: #f09819;
+      box-shadow: 0 0 5px #f09819;
+    }
+    
+    #output {
+      font-size: 18px;
+      margin-bottom: 10px;
+      border: 2px solid #a16632;
+      border-radius: 10px;
+      padding: 10px;
+      color: #3e3e3e;
+      background-color: #f9f4ea;
+    }
+  </style>
+  
+  </head>
+  <body>
+    <h1>Ricerca Libri</h1>
+    <input type="text" id="search-input" placeholder="Inserisci il testo da cercare">
+    <div id="output"></div>
+    <script>
+      class Libro {
+        constructor(titolo, autore, genere, annoPubblicazione) {
+          this.titolo = titolo;
+          this.autore = autore;
+          this.genere = genere;
+          this.annoPubblicazione = annoPubblicazione;
+        }
+      }
+
+      class Archivio {
+        constructor() {
+          this.libri = [
+            new Libro("Il Nome della Rosa", "Umberto Eco", "Giallo", 1980),
+            new Libro("Il Signore degli Anelli", "J.R.R. Tolkien", "Fantasy", 1954),
+            new Libro("1984", "George Orwell", "Distopico", 1949),
+            new Libro("Orgoglio e Pregiudizio", "Jane Austen", "Romanzo", 1813),
+            new Libro("Harry potter e la pietra filosofale", "J.K.Rowling", "Romanzo", 1957),
+            new Libro("Il Barone Rampante", "Italo Calvino", "Romanzo", 1997)
+          ];
+        }
+
+        ricerca(testo) {
+          const risultati = this.libri.filter(libro => {
+            const concatenazione = libro.titolo + libro.autore;
+            return concatenazione.toLowerCase().includes(testo.toLowerCase());
+          });
+          return risultati;
+        }
+      }
+
+      const archivio = new Archivio();
+
+      const searchInput = document.getElementById('search-input');
+      const output = document.getElementById('output');
+
+      searchInput.addEventListener('input', () => {
+  const testo = searchInput.value;
+  if (testo === "") {
+    output.textContent = "";
+    return;
+  }
+  
+  const risultati = archivio.ricerca(testo);
+
+  if (risultati.length === 0) {
+    output.textContent = "Nessun risultato trovato.";
+  } else if (risultati.length === 1) {
+    const libro = risultati[0];
+    output.textContent = `${libro.titolo} di ${libro.autore}`;
+  } else {
+    output.textContent = `${risultati.length} risultati trovati.`;
+  }
+});
+    </script>
+  </body>
+</html>
